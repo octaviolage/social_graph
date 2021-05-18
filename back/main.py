@@ -1,23 +1,32 @@
 import flask
 from flask import request, jsonify
+from flask_cors import CORS
+
+from graph_builder import GraphBuilder
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+CORS(app)
 
-@app.route('/', methods=['GET'])
+graph_builder = GraphBuilder()
+
+@app.route('/api/v1/', methods=['GET'])
 def home():
-    return "<p>Server runnning</p>"
+    return jsonify(message="Server running!"), 202
 
 
-@app.route('/api/v1/friends', methods=['GET'])
+@app.route('/api/v1/graph/friends', methods=['GET'])
 def friends_graph():
     if 'username' in request.args:
-        username = int(request.args['username'])
-    else:
-        return "Error: No username field provided. Please specify an username."
+        username = request.args['username']
 
-    results = []
+        graph, status = graph_builder.get_friends_graph(username)
+        response = jsonify(graph)
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response, status
 
-    return jsonify(results)
+    response = jsonify(message="No username on parameters")
+    return response, 402
 
-app.run()
+if __name__ == "__main__":
+    app.run(port=5000)

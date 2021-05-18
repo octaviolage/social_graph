@@ -1,5 +1,8 @@
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import ForceGraph from '../src/components/graphs/GraphHtml';
 import { TwitterSVG } from '../src/components/svg/Twitter';
+import { getFriendsGraph } from '../src/api';
 
 const Header = styled.div`
   height: 50px;
@@ -49,6 +52,20 @@ Form.Input = styled.input`
 
 
 export default function Home() {
+  const [ graph, setGraph ] = useState()
+  
+  const handleSubmit = async event => {
+    event.preventDefault();
+    const username = event.target.children[0].value
+    const response = await getFriendsGraph(username);
+    await setGraph(response)
+  };
+
+  const handleChange = event => {
+    console.log(graph)
+  };
+
+  console.log(graph)
   return (
     <>
       <Header>
@@ -56,14 +73,15 @@ export default function Home() {
           Twitter Social Graph <TwitterSVG/> 
         </Header.Title>
       </Header>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Form.Input
           type="text"
           placeholder="nome de usuario"
           max-length="50"
+          onChange={handleChange}
         />
       </Form>
-      
+      <ForceGraph data={graph}/>
     </>
   )
 }
