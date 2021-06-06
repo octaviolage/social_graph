@@ -21,5 +21,3 @@ export async function getFriendsGraph(username){
         });
     return graph;
 }
-
-export default { getFriendsGraph };
