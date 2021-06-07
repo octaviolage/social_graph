@@ -104,7 +104,7 @@ function App() {
         graph ?
           <div>
             <ForceGraph linksData={graph.links} nodesData={graph.nodes} nodeHoverTooltip={nodeHoverTooltip}/>
-            <Friends nodes={data.nodes} />
+            <Friends nodes={graph.nodes} />
           </div> :
           null
       }
