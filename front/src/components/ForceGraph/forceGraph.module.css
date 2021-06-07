@@ -22,7 +22,7 @@ div.tooltip {
   padding: 10px;
   max-width: 250px;
   font: 12px sans-serif;
-  background: white;
+  background: var(--secondary);
   border: 1px solid var(--primary);
   border-radius: 8px;
   pointer-events: none;

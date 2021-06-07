@@ -70,11 +70,6 @@ function App() {
     setAdjList(response.adjacency_list);
   };
 
-  const handleChange = event => {
-    console.log(adjList)
-    console.log(graph)
-  };
-
   const nodeHoverTooltip = React.useCallback((node) => {
     return `
       <div>
@@ -94,7 +89,7 @@ function App() {
   return (
     <>
       <Header>
-        <Header.Title onMouseOver={handleChange}>
+        <Header.Title>
           Twitter Social Graph <TwitterSVG/> 
         </Header.Title>
       </Header>
@@ -109,12 +104,12 @@ function App() {
         graph ?
           <div>
             <ForceGraph linksData={graph.links} nodesData={graph.nodes} nodeHoverTooltip={nodeHoverTooltip}/>
-            {/* <Friends nodes={graph.nodes} /> */}
+            <Friends nodes={data.nodes} />
           </div> :
           null
       }
-      <ForceGraph linksData={data.links} nodesData={data.nodes} nodeHoverTooltip={nodeHoverTooltip}/>
-      <Friends nodes={data.nodes} />
+      {/* <ForceGraph linksData={data.links} nodesData={data.nodes} nodeHoverTooltip={nodeHoverTooltip}/>
+      <Friends nodes={data.nodes} /> */}
     </>
   );
 }
