@@ -10,12 +10,12 @@ CORS(app)
 
 graph_builder = GraphBuilder()
 
-@app.route('/api/v1/', methods=['GET'])
+@app.route('/api/v1/')
 def home():
     return jsonify(message="Server running!"), 202
 
 
-@app.route('/api/v1/graph/friends', methods=['GET'])
+@app.route('/api/v1/graph/friends', methods=['POST', 'GET'])
 def friends_graph():
     if 'username' in request.args:
         username = request.args['username']
