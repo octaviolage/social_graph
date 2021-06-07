@@ -1,18 +1,7 @@
 const SERVER_URL = 'http://localhost:5000/api/v1';
 
 export async function getFriendsGraph(username){
-    var usernameData = {
-        username: `${username}`
-    }
-
-    var data = new FormData();
-    data.append( "json", JSON.stringify( usernameData ) );
-
-    const graph = await fetch(`${SERVER_URL}/graph/friends`,
-        {
-            method: "POST",
-            body: data
-        })
+    const graph = await fetch(`${SERVER_URL}/graph/friends?username=${username}`)
         .then((response) => {
             if (response.status === 200) {
                 console.log('Sucesso!')

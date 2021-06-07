@@ -1,3 +1,4 @@
 *.json
 !package.json
 !front/package.json
+!front/src/data/data.json

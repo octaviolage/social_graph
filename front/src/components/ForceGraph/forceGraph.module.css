@@ -30,7 +30,7 @@ div.tooltip {
   width: 110px;
   padding: 10px;
   font: 12px sans-serif;
-  background: var(--secondary);
+  background: white;
   border: 1px solid var(--primary);
   border-radius: 8px;
   pointer-events: none;
