@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import ForceGraph from './components/ForceGraph';
 import TwitterSVG from '../src/components/svg/TwitterBird';
 import data from './data/data.json'
-import { getFriendsGraph } from './components/api';
+import { getFriendsGraph } from './api';
+import Friends from './components/Friends';
 
 const Header = styled.div`
   height: 50px;
@@ -76,12 +77,16 @@ function App() {
 
   const nodeHoverTooltip = React.useCallback((node) => {
     return `
-      <div>     
-        <b>${node.name}</b>
-        <br/>
-        ${node.id}
-        <br/>
-        ${node.description}
+      <div>
+        <div class="name">
+          ${node.name}
+        </div>
+        <div class="username">
+          ${node.id}
+        </div>
+        <div class="description">
+          ${node.description ? node.description : ''}
+        </div>
       </div>
     `;
   }, []);
@@ -102,10 +107,14 @@ function App() {
       </Form>
       {
         graph ?
-        <ForceGraph linksData={graph.links} nodesData={graph.nodes} nodeHoverTooltip={nodeHoverTooltip}/> :
-        null
+          <div>
+            <ForceGraph linksData={graph.links} nodesData={graph.nodes} nodeHoverTooltip={nodeHoverTooltip}/>
+            {/* <Friends nodes={graph.nodes} /> */}
+          </div> :
+          null
       }
       <ForceGraph linksData={data.links} nodesData={data.nodes} nodeHoverTooltip={nodeHoverTooltip}/>
+      <Friends nodes={data.nodes} />
     </>
   );
 }

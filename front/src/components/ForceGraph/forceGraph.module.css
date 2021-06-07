@@ -11,14 +11,6 @@
   height: 100%;
 }
 
-.male {
-  fill: rgb(22, 130, 218);
-}
-
-.female {
-  fill: var(--extraLightGray);
-}
-
 .node text {
   font: 12px sans-serif;
   color: white;
@@ -26,9 +18,9 @@
 
 div.tooltip {
   position: absolute;
-  text-align: center;
-  width: 110px;
+  text-align: left;
   padding: 10px;
+  max-width: 250px;
   font: 12px sans-serif;
   background: var(--secondary);
   border: 1px solid var(--primary);

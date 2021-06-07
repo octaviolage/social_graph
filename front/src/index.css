@@ -11,6 +11,19 @@ a {
   color: inherit;
 }
 
+.name {
+  color: var(--extraLightGray);
+  font-weight: bold;
+}
+
+.username {
+  color: var(--lightGray);
+}
+
+.description {
+  color: var(--extraLightGray);
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
