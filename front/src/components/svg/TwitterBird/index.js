@@ -8,7 +8,7 @@ const Svg = styled.svg`
     }
 `;
 
-export function TwitterSVG() {
+export default function TwitterSVG() {
     return (
         <Svg xmlns="http://www.w3.org/2000/svg"  height="50" viewBox="0 0 24 24">
             <path 
@@ -18,5 +18,3 @@ export function TwitterSVG() {
         </Svg>
     )
 }
-
-export default { TwitterSVG };

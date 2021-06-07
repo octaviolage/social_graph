@@ -21,13 +21,14 @@ class GraphBuilder():
         self.__api = API(auth)
 
 
-    def __handle_user(self, user: object):
+    def __handle_user(self, user: object, relevance: int):
         attributes = {
             'name': user.name,
             'screen_name': user.screen_name,
             'description': user.description,
             'location': user.location,
-            'picture': user.profile_image_url_https
+            'picture': user.profile_image_url_https,
+            'relevance': relevance
         }
 
         return attributes
@@ -37,7 +38,7 @@ class GraphBuilder():
         # Verifica se o nome do usuário já esta no dicionário. Caso não esteja cria uma entrada p/ ele.
         if screen_name not in adjacency_list.keys():
             adjacency_list[screen_name] = []
-            users[screen_name] = self.__handle_user(self.__api.get_user(screen_name))
+            users[screen_name] = self.__handle_user(self.__api.get_user(screen_name), 0)
         
         # Busca por usuários que o usuário atual segue.
         friends = self.__api.friends(screen_name=screen_name, skip_status=True)
@@ -48,7 +49,7 @@ class GraphBuilder():
             if friend.screen_name not in adjacency_list.keys():
                 adjacency_list[screen_name].append(friend.screen_name)
                 adjacency_list[friend.screen_name] = []
-                users[friend.screen_name] = self.__handle_user(friend)
+                users[friend.screen_name] = self.__handle_user(friend, limit)
 
                 # Limita a quantidade de recursões. Limite igual a 3 significa ligações de até 4º grau.
                 # Quanto menor o grau de ligação, menos amigos desse usuário serão encontrados.
@@ -64,37 +65,41 @@ class GraphBuilder():
 
 
     def get_friends_graph(self, username: str):
-
+        recommended_users = {}
         adjacency_list, users = self.__get_friends_data(username)
         graph = {'nodes': [], 'links': [], 'focusedNodeId': username}
-        # try:
-        #     for user, links in adjacency_list.items():
-        #         graph['nodes'].append(
-        #             {
-        #                 'id': user,
-        #                 'svg': users[user]['picture']
-        #             }
-        #         )
-        #         [graph['links'].append(x) for x in links]
-        # except:
-        #     with open('graph.json', 'r') as graph_json:
-        #         return graph_json, 206
         for user, follows in adjacency_list.items():
             graph['nodes'].append( 
-                { 'id': user, 'svg': users[user]['picture'] } 
+                { 
+                    'id': user,
+                    'name': users[user]['name'],
+                    'image': users[user]['picture'],
+                    'description': users[user]['description'],
+                    'relevance': users[user]['relevance'],
+                } 
             )
             for follow in follows:
                 graph['links'].append( 
                     { 'source': user, 'target': follow } 
                 )
+                if follow in recommended_users.keys():
+                    recommended_users[follow] = recommended_users[follow] + 1
+                else:
+                    recommended_users[follow] = 1
 
-        with open('graph.json', 'w') as json_file:
-            json.dump(graph, json_file)
+        response = {
+            'graph': graph,
+            'adjacency_list': adjacency_list
+        }
 
-        with open('adj_list.json', 'w') as adj_list:
-            json.dump(adjacency_list, adj_list)
 
-        with open('users.json', 'w') as json_file:
-            json.dump(users, json_file)
+        # with open('graph.json', 'w') as json_file:
+        #     json.dump(graph, json_file)
 
-        return graph, 200
+        # with open('adj_list.json', 'w') as adj_list:
+        #     json.dump(adjacency_list, adj_list)
+
+        # with open('users.json', 'w') as json_file:
+        #     json.dump(users, json_file)
+
+        return response, 200

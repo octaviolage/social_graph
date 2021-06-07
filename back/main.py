@@ -15,24 +15,15 @@ def home():
     return jsonify(message="Server running!"), 202
 
 
-@app.route('/api/v1/graph/friends', methods=['POST', 'GET'])
+@app.route('/api/v1/graph/friends', methods=['GET'])
 def friends_graph():
-    if request.method == 'POST':
-        if 'username' in request.args:
-            username = request.args['username']
+    if 'username' in request.args:
+        username = request.args['username']
 
-            graph, status = graph_builder.get_friends_graph(username)
-            response = jsonify(graph)
-            response.headers.add("Access-Control-Allow-Origin", "*")
-            return response, status
-    else:
-        if 'username' in request.forms:
-            username = request.forms['username']
-
-            graph, status = graph_builder.get_friends_graph(username)
-            response = jsonify(graph)
-            response.headers.add("Access-Control-Allow-Origin", "*")
-            return response, status
+        graph, status = graph_builder.get_friends_graph(username)
+        response = jsonify(graph)
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response, status
 
     response = jsonify(message="No username on parameters")
     return response, 402
