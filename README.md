@@ -28,7 +28,7 @@ git clone https://github.com/octaviolage/social_graph
 
 Navegue ate a pasta do repositorio e execute o comando abaixo para criar as imagens do Docker e ver seu processo de execução.
 ```
-docker compose up
+docker-compose up
 ```
 
 Caso não queira ver o processo de execução da aplicação, você tambem pode utilizar a flag ``-d``, sendo o comando ``docker-compose up -d``.
